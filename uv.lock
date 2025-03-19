@@ -62,7 +62,7 @@ wheels = [
 
 [[package]]
 name = "funcnodes-core"
-version = "0.3.47"
+version = "0.3.48"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dill" },
@@ -71,9 +71,9 @@ dependencies = [
     { name = "setuptools" },
     { name = "tqdm" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/16/50/ffcacb0e57107cee8ac3fe4f14e85c23108f67ec07a2d1b770d76598b507/funcnodes_core-0.3.47.tar.gz", hash = "sha256:1ab9d44e52b56d42b2037bcfcf06f3f5a97f6474656dd0babd81dfc70a61719c", size = 89562 }
+sdist = { url = "https://files.pythonhosted.org/packages/f3/18/75a7fc52501a32688d7ca9f55c759a14c29ed5dcc6228825751e4258d765/funcnodes_core-0.3.48.tar.gz", hash = "sha256:5f6d72d2555cec351c8a2b0b09d8d07906049bae9df1165a50baaac148ddb0f4", size = 89607 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/30/40/d58becf373524bbbad6b9ffba0c96025092f270e97f13909b9a914a54d59/funcnodes_core-0.3.47-py3-none-any.whl", hash = "sha256:dd2c0212700b964961e418adbbe563984108bc25d6a72671c3501df1e5d6b1ff", size = 81589 },
+    { url = "https://files.pythonhosted.org/packages/bd/7e/7f7babb2446b45d5a51f809ae16c74dfe70f9b0887fbfcc46f92e1e46328/funcnodes_core-0.3.48-py3-none-any.whl", hash = "sha256:a16f455d1554329a9056a833be9bbdc19631a0fb119ae812b2016466ac13c8da", size = 81661 },
 ]
 
 [[package]]
@@ -190,7 +190,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "funcnodes-core", specifier = ">=0.3.47" },
+    { name = "funcnodes-core", specifier = ">=0.3.48" },
     { name = "pytest", specifier = ">=6.2.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
 ]
