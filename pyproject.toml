@@ -38,5 +38,4 @@ funcnodes-pytest = "pytest_funcnodes.plugin"
 [dependency-groups]
 dev = [
     "pre-commit>=4.2.0",
-    "tox>=4.24.2",
 ]
