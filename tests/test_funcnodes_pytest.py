@@ -6,7 +6,7 @@ def test_node_marker(pytester: pytest.Pytester):
         """
         import pytest
         from pytest_funcnodes import nodetest
-                      
+
         @nodetest()
         async def test_node():
             assert True
@@ -22,7 +22,7 @@ def test_all_nodes_tested_simple(pytester: pytest.Pytester):
         import pytest
         from pytest_funcnodes import nodetest, all_nodes_tested
         import funcnodes_core as fn
-        
+
         @fn.NodeDecorator("testnode")
         def testnode():
             pass
@@ -39,7 +39,7 @@ def test_all_nodes_tested_simple(pytester: pytest.Pytester):
 
         def test_all_nodes_tested(all_nodes):
             all_nodes_tested(all_nodes,shelf)
-            
+
     """
     )
     result = pytester.runpytest("-v")
@@ -52,7 +52,7 @@ def test_all_nodes_tested_simple_fail(pytester: pytest.Pytester):
         import pytest
         from pytest_funcnodes import nodetest, all_nodes_tested
         import funcnodes_core as fn
-        
+
         @fn.NodeDecorator("testnode")
         def testnode():
             pass
@@ -65,7 +65,7 @@ def test_all_nodes_tested_simple_fail(pytester: pytest.Pytester):
 
         def test_all_nodes_tested(all_nodes):
             all_nodes_tested(all_nodes,shelf)
-            
+
     """
     )
     result = pytester.runpytest("-v")
@@ -78,7 +78,7 @@ def test_all_nodes_tested_ignore_node(pytester: pytest.Pytester):
         import pytest
         from pytest_funcnodes import nodetest, all_nodes_tested
         import funcnodes_core as fn
-        
+
         @fn.NodeDecorator("testnode")
         def testnode():
             pass
@@ -91,7 +91,7 @@ def test_all_nodes_tested_ignore_node(pytester: pytest.Pytester):
 
         def test_all_nodes_tested(all_nodes):
             all_nodes_tested(all_nodes,shelf,ignore=[testnode])
-            
+
     """
     )
     result = pytester.runpytest("-v")
@@ -104,7 +104,7 @@ def test_all_nodes_tested_ignore_shelf(pytester: pytest.Pytester):
         import pytest
         from pytest_funcnodes import nodetest, all_nodes_tested
         import funcnodes_core as fn
-        
+
         @fn.NodeDecorator("testnode")
         def testnode():
             pass
@@ -121,7 +121,7 @@ def test_all_nodes_tested_ignore_shelf(pytester: pytest.Pytester):
 
         def test_all_nodes_tested(all_nodes):
             all_nodes_tested(all_nodes,shelf,ignore=[ignoreshelf])
-            
+
     """
     )
     result = pytester.runpytest("-v")

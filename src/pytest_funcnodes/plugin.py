@@ -1,6 +1,5 @@
 import pytest
 from funcnodes_core import testing as fntesting
-from pathlib import Path
 
 
 def pytest_addoption(parser):
