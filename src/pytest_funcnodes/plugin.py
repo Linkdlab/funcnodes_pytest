@@ -41,6 +41,9 @@ def pytest_collection_modifyitems(session: pytest.Session, config, items):
 
 def pytest_configure(config: pytest.Config):
     config.addinivalue_line("markers", "nodetest: mark test as an async node test")
+    config.addinivalue_line(
+        "markers", "funcnodes_test: mark test as an async funcnodes test"
+    )
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -60,6 +63,18 @@ def my_session_fixture():
 @pytest.fixture(autouse=True)
 def nodetest_setup_teardown(request):
     marker = request.node.get_closest_marker("nodetest")
+    if marker:
+        # Code to run before the test function
+        fntesting.setup()
+    yield
+    if marker:
+        # Code to run after the test function
+        fntesting.teardown()
+
+
+@pytest.fixture(autouse=True)
+def funcnodes_test_setup_teardown(request):
+    marker = request.node.get_closest_marker("funcnodes_test")
     if marker:
         # Code to run before the test function
         fntesting.setup()
