@@ -1,5 +1,7 @@
 import pytest
 
+PYTESTER_OPTIONS = ["-v", "-o", "asyncio_default_fixture_loop_scope=function"]
+
 
 def test_node_marker(pytester: pytest.Pytester):
     pytester.makepyfile(
@@ -12,7 +14,7 @@ def test_node_marker(pytester: pytest.Pytester):
             assert True
     """
     )
-    result = pytester.runpytest("-v")
+    result = pytester.runpytest(*PYTESTER_OPTIONS)
     result.assert_outcomes(passed=1)
 
 
@@ -42,7 +44,7 @@ def test_all_nodes_tested_simple(pytester: pytest.Pytester):
 
     """
     )
-    result = pytester.runpytest("-v")
+    result = pytester.runpytest(*PYTESTER_OPTIONS)
     result.assert_outcomes(passed=2)
 
 
@@ -68,7 +70,7 @@ def test_all_nodes_tested_simple_fail(pytester: pytest.Pytester):
 
     """
     )
-    result = pytester.runpytest("-v")
+    result = pytester.runpytest(*PYTESTER_OPTIONS)
     result.assert_outcomes(failed=1)
 
 
@@ -94,7 +96,7 @@ def test_all_nodes_tested_ignore_node(pytester: pytest.Pytester):
 
     """
     )
-    result = pytester.runpytest("-v")
+    result = pytester.runpytest(*PYTESTER_OPTIONS)
     result.assert_outcomes(passed=1)
 
 
@@ -124,5 +126,5 @@ def test_all_nodes_tested_ignore_shelf(pytester: pytest.Pytester):
 
     """
     )
-    result = pytester.runpytest("-v")
+    result = pytester.runpytest(*PYTESTER_OPTIONS)
     result.assert_outcomes(passed=1)

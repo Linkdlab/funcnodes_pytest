@@ -24,4 +24,6 @@ def all_nodes_tested(
 
     untested_nodes = [n for n in nodes if n not in tested_nodes]
     untested_nodes = [n for n in untested_nodes if n not in ignore_nodes]
-    assert not untested_nodes, f"Untested nodes: {untested_nodes}"
+    assert not untested_nodes, "Untested nodes:\n" + "\n".join(
+        str(n) for n in untested_nodes
+    )
