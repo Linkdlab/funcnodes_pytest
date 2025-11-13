@@ -1,3 +1,10 @@
+## 0.4.1 (2025-11-13)
+
+### Fix
+
+- **testingsystem**: simplify get_in_test call in setup function
+- **testingsystem**: update deprecation warning import for consistency
+
 ## 0.4.0 (2025-11-13)
 
 ### Feat
