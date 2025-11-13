@@ -1,3 +1,9 @@
+## 0.4.0 (2025-11-13)
+
+### Feat
+
+- **pytest-funcnodes**: expand __all__ to include testing system functions
+
 ## 0.3.0 (2025-11-13)
 
 ### Feat
