@@ -1,5 +1,5 @@
 import pytest
-from funcnodes_core import testing as fntesting
+from .testingsystem import test_context
 
 
 def pytest_addoption(parser):
@@ -65,11 +65,10 @@ def nodetest_setup_teardown(request):
     marker = request.node.get_closest_marker("nodetest")
     if marker:
         # Code to run before the test function
-        fntesting.setup()
-    yield
-    if marker:
-        # Code to run after the test function
-        fntesting.teardown()
+        with test_context():
+            yield
+    else:
+        yield
 
 
 @pytest.fixture(autouse=True)
@@ -77,8 +76,7 @@ def funcnodes_test_setup_teardown(request):
     marker = request.node.get_closest_marker("funcnodes_test")
     if marker:
         # Code to run before the test function
-        fntesting.setup()
-    yield
-    if marker:
-        # Code to run after the test function
-        fntesting.teardown()
+        with test_context():
+            yield
+    else:
+        yield
