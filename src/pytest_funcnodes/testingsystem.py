@@ -15,6 +15,8 @@ from pathlib import Path
 import tempfile
 import shutil
 
+from funcnodes_core.utils.deprecations import FuncNodesDeprecationWarning
+
 _IN_NODE_TEST = False
 
 
@@ -48,7 +50,7 @@ def set_in_test(
         _IN_NODE_TEST = True
 
         if fail_on_warnings is None:
-            fail_on_warnings = [fnconfig.FuncNodesDeprecationWarning]
+            fail_on_warnings = [FuncNodesDeprecationWarning]
         if fail_on_warnings and not sys.warnoptions:
             if not isinstance(fail_on_warnings, list):
                 try:
@@ -95,7 +97,7 @@ def setup(
     clear: bool = True,
     add_pid: bool = True,
 ):
-    if raise_if_already_in_test and fnconfig.get_in_test():
+    if raise_if_already_in_test and get_in_test():
         raise RuntimeError("Already in test mode")
     if not get_in_test():
         set_in_test(
