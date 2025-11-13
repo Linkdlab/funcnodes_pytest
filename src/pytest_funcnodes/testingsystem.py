@@ -97,7 +97,7 @@ def setup(
     clear: bool = True,
     add_pid: bool = True,
 ):
-    if raise_if_already_in_test and fnconfig.get_in_test():
+    if raise_if_already_in_test and get_in_test():
         raise RuntimeError("Already in test mode")
     if not get_in_test():
         set_in_test(
