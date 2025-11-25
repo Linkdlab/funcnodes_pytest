@@ -1,6 +1,5 @@
 import logging
 import os
-import sys
 from typing import List, Optional
 import warnings
 from funcnodes_core import config as fnconfig
@@ -33,6 +32,7 @@ def set_in_test(
     add_pid: bool = True,
     config: Optional[fnconfig.ConfigType] = None,
     fail_on_warnings: Optional[List[Warning]] = None,
+    disable_file_handler: bool = True,
 ):
     """
     Sets the configuration to be in test mode.
@@ -51,7 +51,7 @@ def set_in_test(
 
         if fail_on_warnings is None:
             fail_on_warnings = [FuncNodesDeprecationWarning]
-        if fail_on_warnings and not sys.warnoptions:
+        if fail_on_warnings:
             if not isinstance(fail_on_warnings, list):
                 try:
                     fail_on_warnings = list(fail_on_warnings)
@@ -59,7 +59,8 @@ def set_in_test(
                     fail_on_warnings = [fail_on_warnings]
 
             for w in fail_on_warnings:
-                warnings.simplefilter("error", w, append=True)
+                # prepend so that existing ignore/default filters do not override
+                warnings.filterwarnings("error", category=w, append=False)
 
         fn = "funcnodes_test"
         if add_pid:
@@ -78,7 +79,8 @@ def set_in_test(
 
         fnconfig.reload(fnconfig._BASE_CONFIG_DIR)
 
-        fnconfig.update_config({"logging": {"handler": {"file": False}}})
+        if disable_file_handler:
+            fnconfig.update_config({"logging": {"handler": {"file": False}}})
         fnconfig.update_config({"logging": {"level": "DEBUG"}})
         # import here to avoid circular import
 
@@ -96,6 +98,7 @@ def setup(
     fail_on_warnings: Optional[List[Warning]] = None,
     clear: bool = True,
     add_pid: bool = True,
+    disable_file_handler: bool = True,
 ):
     if raise_if_already_in_test and get_in_test():
         raise RuntimeError("Already in test mode")
@@ -105,6 +108,7 @@ def setup(
             fail_on_warnings=fail_on_warnings,
             clear=clear,
             add_pid=add_pid,
+            disable_file_handler=disable_file_handler,
         )
     if not get_in_test():
         raise RuntimeError("Failed to set in test mode")
@@ -148,12 +152,14 @@ class test_context:
         fail_on_warnings: Optional[List[Warning]] = None,
         clear: bool = True,
         add_pid: bool = True,
+        disable_file_handler: bool = True,
     ):
         self._config_dir = None
         self._config = config
         self._fail_on_warnings = fail_on_warnings
         self._clear = clear
         self._add_pid = add_pid
+        self._disable_file_handler = disable_file_handler
 
     def __enter__(self):
         setup(
@@ -161,6 +167,7 @@ class test_context:
             fail_on_warnings=self._fail_on_warnings,
             clear=self._clear,
             add_pid=self._add_pid,
+            disable_file_handler=self._disable_file_handler,
         )
         self._config_dir = fnconfig.get_config_dir()
         if Path(tempfile.gettempdir()) not in self._config_dir.parents:

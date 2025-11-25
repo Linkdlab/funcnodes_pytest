@@ -1,3 +1,9 @@
+## 0.4.2 (2025-11-25)
+
+### Fix
+
+- **pytest-funcnodes**: harden decorators and test context handling
+
 ## 0.4.1 (2025-11-13)
 
 ### Fix
