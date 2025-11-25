@@ -76,7 +76,7 @@ def funcnodes_test_setup_teardown(request):
     marker = request.node.get_closest_marker("funcnodes_test")
     if marker:
         # Code to run before the test function
-        with test_context():
+        with test_context(**marker.kwargs):
             yield
     else:
         yield
