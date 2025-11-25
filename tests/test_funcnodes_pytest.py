@@ -3,6 +3,18 @@ import pytest
 PYTESTER_OPTIONS = ["-v", "-o", "asyncio_default_fixture_loop_scope=function"]
 
 
+def test_pytest_import():
+    # reload the module to ensure it is importable
+    import pytest_funcnodes
+    import importlib
+
+    importlib.reload(pytest_funcnodes.nodetest_decorator)
+    importlib.reload(pytest_funcnodes.subtests)
+    importlib.reload(pytest_funcnodes.testingsystem)
+    importlib.reload(pytest_funcnodes.plugin)
+    importlib.reload(pytest_funcnodes)
+
+
 def test_node_marker(pytester: pytest.Pytester):
     pytester.makepyfile(
         """
