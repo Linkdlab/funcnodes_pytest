@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 import tempfile
 import pytest
-from .testingsystem import test_context
+from .testingsystem import test_context, get_in_test
 
 
 def pytest_addoption(parser):
@@ -82,7 +82,9 @@ def funcnodes_test_setup_teardown(request):
     marker = request.node.get_closest_marker("funcnodes_test")
     if marker:
         # Code to run before the test function
+        assert not get_in_test(), "Already in test mode"
         with test_context(**marker.kwargs):
             yield
+        assert not get_in_test(), "Still in test mode after test context"
     else:
         yield

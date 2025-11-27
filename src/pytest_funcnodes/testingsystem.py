@@ -85,9 +85,9 @@ def set_in_test(
             fnconfig.update_config({"logging": {"handler": {"file": False}}})
         fnconfig.update_config({"logging": {"level": "DEBUG"}})
         # import here to avoid circular import
-
-        _update_logger(FUNCNODES_LOGGER)
         set_logging_dir(os.path.join(fnconfig._BASE_CONFIG_DIR, "logs"))
+        _update_logger(FUNCNODES_LOGGER)
+
     finally:
         fnconfig._CONFIG_CHANGED = (
             True  # we change this to true, that the config is reloaded
