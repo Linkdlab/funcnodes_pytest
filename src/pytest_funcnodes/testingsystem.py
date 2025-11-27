@@ -13,6 +13,7 @@ from funcnodes_core._logging import (
 from pathlib import Path
 import tempfile
 import shutil
+import uuid
 
 from funcnodes_core.utils.deprecations import FuncNodesDeprecationWarning
 
@@ -29,7 +30,7 @@ def get_in_test() -> bool:
 def set_in_test(
     *,
     clear: bool = True,
-    add_pid: bool = True,
+    no_prefix: bool = False,
     config: Optional[fnconfig.ConfigType] = None,
     fail_on_warnings: Optional[List[Warning]] = None,
     disable_file_handler: bool = True,
@@ -63,8 +64,9 @@ def set_in_test(
                 warnings.filterwarnings("error", category=w, append=False)
 
         fn = "funcnodes_test"
-        if add_pid:
-            fn += f"_{os.getpid()}"
+
+        if not no_prefix:
+            fn += f"_{os.getpid()}_{uuid.uuid4().hex}"
 
         fnconfig._BASE_CONFIG_DIR = Path(tempfile.gettempdir()) / fn
         if clear:
@@ -83,9 +85,9 @@ def set_in_test(
             fnconfig.update_config({"logging": {"handler": {"file": False}}})
         fnconfig.update_config({"logging": {"level": "DEBUG"}})
         # import here to avoid circular import
-
-        _update_logger(FUNCNODES_LOGGER)
         set_logging_dir(os.path.join(fnconfig._BASE_CONFIG_DIR, "logs"))
+        _update_logger(FUNCNODES_LOGGER)
+
     finally:
         fnconfig._CONFIG_CHANGED = (
             True  # we change this to true, that the config is reloaded
@@ -97,7 +99,7 @@ def setup(
     config: Optional[fnconfig.ConfigType] = None,
     fail_on_warnings: Optional[List[Warning]] = None,
     clear: bool = True,
-    add_pid: bool = True,
+    no_prefix: bool = False,
     disable_file_handler: bool = True,
 ):
     if raise_if_already_in_test and get_in_test():
@@ -107,7 +109,7 @@ def setup(
             config=config,
             fail_on_warnings=fail_on_warnings,
             clear=clear,
-            add_pid=add_pid,
+            no_prefix=no_prefix,
             disable_file_handler=disable_file_handler,
         )
     if not get_in_test():
@@ -151,14 +153,14 @@ class test_context:
         config: Optional[fnconfig.ConfigType] = None,
         fail_on_warnings: Optional[List[Warning]] = None,
         clear: bool = True,
-        add_pid: bool = True,
+        no_prefix: bool = False,
         disable_file_handler: bool = True,
     ):
         self._config_dir = None
         self._config = config
         self._fail_on_warnings = fail_on_warnings
         self._clear = clear
-        self._add_pid = add_pid
+        self._no_prefix = no_prefix
         self._disable_file_handler = disable_file_handler
 
     def __enter__(self):
@@ -166,7 +168,7 @@ class test_context:
             config=self._config,
             fail_on_warnings=self._fail_on_warnings,
             clear=self._clear,
-            add_pid=self._add_pid,
+            no_prefix=self._no_prefix,
             disable_file_handler=self._disable_file_handler,
         )
         self._config_dir = fnconfig.get_config_dir()
