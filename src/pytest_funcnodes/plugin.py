@@ -1,3 +1,6 @@
+import os
+from pathlib import Path
+import tempfile
 import pytest
 from .testingsystem import test_context
 
@@ -43,6 +46,9 @@ def pytest_configure(config: pytest.Config):
     config.addinivalue_line("markers", "nodetest: mark test as an async node test")
     config.addinivalue_line(
         "markers", "funcnodes_test: mark test as an async funcnodes test"
+    )
+    os.environ["FUNCNODES_CONFIG_DIR"] = str(
+        Path(tempfile.gettempdir()) / "funcnodes_test_base"
     )
 
 
