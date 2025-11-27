@@ -42,7 +42,7 @@ def test_funcnodes_test_decorator_with_kwargs(pytester: pytest.Pytester):
         from pytest_funcnodes import funcnodes_test
 
 
-        @funcnodes_test(add_pid=False, disable_file_handler=False)
+        @funcnodes_test(no_prefix=True, disable_file_handler=False)
         def test_config_dir_name_is_stable():
             config_dir = funcnodes_core.config.get_config_dir()
             assert config_dir.name == "funcnodes_test"
