@@ -506,7 +506,7 @@ wheels = [
 
 [[package]]
 name = "pytest-funcnodes"
-version = "1.0.0a1"
+version = "1.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "funcnodes-core" },
