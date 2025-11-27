@@ -26,7 +26,7 @@ def test_set_in_test_enables_warning_errors_and_resets():
         with warnings.catch_warnings():
             with pytest.raises(FuncNodesDeprecationWarning):
                 set_in_test(
-                    add_pid=False,
+                    no_prefix=True,
                     clear=True,
                     fail_on_warnings=(FuncNodesDeprecationWarning,),
                 )
@@ -43,7 +43,7 @@ def test_set_in_test_enables_warning_errors_and_resets():
     assert test_file.exists()
 
     try:
-        set_in_test(add_pid=False, clear=True, fail_on_warnings=())
+        set_in_test(no_prefix=True, clear=True, fail_on_warnings=())
         assert get_in_test()
         assert not test_file.exists()
     finally:
@@ -60,7 +60,7 @@ def test_set_in_test_early_return_when_already_flagged(tmp_path):
         fnconfig.reload(fnconfig._BASE_CONFIG_DIR)
 
         before_dir = fnconfig.get_config_dir()
-        set_in_test(add_pid=False, clear=True)
+        set_in_test(no_prefix=True, clear=True)
         after_dir = fnconfig.get_config_dir()
         assert before_dir == after_dir
     finally:
@@ -72,7 +72,7 @@ def test_set_in_test_early_return_when_already_flagged(tmp_path):
 def test_set_in_test_handles_unlistable_warning_input():
     try:
         set_in_test(
-            add_pid=False, clear=True, fail_on_warnings=FuncNodesDeprecationWarning
+            no_prefix=True, clear=True, fail_on_warnings=FuncNodesDeprecationWarning
         )
         with pytest.raises(FuncNodesDeprecationWarning):
             warnings.warn("boom", FuncNodesDeprecationWarning)
@@ -90,7 +90,7 @@ def test_set_in_test_clear_handles_existing_dir_with_open_file(tmp_path):
         held_file.write("locked")
         held_file.flush()
 
-        set_in_test(add_pid=False, clear=True)
+        set_in_test(no_prefix=True, clear=True)
         assert fnconfig.get_config_dir().exists()
     finally:
         teardown()
@@ -106,7 +106,7 @@ def test_set_in_test_clear_handles_existing_dir_with_open_file(tmp_path):
 def test_set_in_test_writes_custom_config():
     try:
         set_in_test(
-            add_pid=False,
+            no_prefix=True,
             clear=True,
             config={"env_dir": "custom-env"},
             fail_on_warnings=(),
@@ -126,7 +126,7 @@ def test_setup_raises_when_config_cannot_be_set():
         fnconfig._BASE_CONFIG_DIR = bad_dir
         fnconfig.reload(fnconfig._BASE_CONFIG_DIR)
         with pytest.raises(RuntimeError, match="Failed to set in test mode"):
-            setup(raise_if_already_in_test=False, add_pid=False)
+            setup(raise_if_already_in_test=False, no_prefix=True)
     finally:
         testingsystem._IN_NODE_TEST = original_in_test
         fnconfig._BASE_CONFIG_DIR = original_base
@@ -142,7 +142,7 @@ def test_test_context_raises_when_config_not_in_tempdir():
         fnconfig.reload(bad_dir)
         testingsystem._IN_NODE_TEST = True
 
-        context = test_context(add_pid=False, clear=False)
+        context = test_context(no_prefix=True, clear=False)
         context._config_dir = bad_dir
         with pytest.raises(RuntimeError, match="Failed to set in test mode"):
             with context:
@@ -156,16 +156,16 @@ def test_test_context_raises_when_config_not_in_tempdir():
 
 def test_setup_detects_existing_test_mode():
     try:
-        set_in_test(add_pid=False)
+        set_in_test(no_prefix=True)
         with pytest.raises(RuntimeError):
-            setup(raise_if_already_in_test=True, add_pid=False)
+            setup(raise_if_already_in_test=True, no_prefix=True)
     finally:
         teardown()
 
 
 def test_test_context_cleans_and_marks_state():
     config_dir: Path | None = None
-    with test_context(add_pid=False, clear=True) as ctx:
+    with test_context(no_prefix=True, clear=True) as ctx:
         assert get_in_test()
         config_dir = fnconfig.get_config_dir()
         assert config_dir.parent == Path(tempfile.gettempdir())
