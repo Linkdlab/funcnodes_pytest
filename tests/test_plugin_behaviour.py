@@ -1,5 +1,8 @@
 import pytest
 from pytest_funcnodes import nodetest
+import funcnodes_core
+from pytest_funcnodes import funcnodes_test
+import json
 
 PYTESTER_OPTIONS = ["-v", "-o", "asyncio_default_fixture_loop_scope=function"]
 
@@ -99,3 +102,71 @@ def test_plugin_handles_marker_without_nodes(pytester: pytest.Pytester):
     )
     result = pytester.runpytest(*PYTESTER_OPTIONS)
     result.assert_outcomes(passed=2)
+
+
+def test_funcnodes_test_uses_unique_contexts_per_test(
+    pytester: pytest.Pytester,
+):
+    test_file = pytester.makepyfile(
+        """
+        import funcnodes_core
+        from pytest_funcnodes import funcnodes_test
+
+        seen_config_dirs = []
+
+
+        @funcnodes_test
+        def test_first_context_isolation():
+            seen_config_dirs.append(funcnodes_core.config.get_config_dir())
+
+
+        @funcnodes_test
+        def test_second_context_isolation():
+            seen_config_dirs.append(funcnodes_core.config.get_config_dir())
+
+
+        def test_config_dirs_are_distinct():
+            assert len(seen_config_dirs) == 2
+            assert seen_config_dirs[0] != seen_config_dirs[1]
+            assert len({str(path) for path in seen_config_dirs}) == 2
+        """
+    )
+
+    result = pytester.runpytest(*PYTESTER_OPTIONS)
+    result.assert_outcomes(passed=3)
+    assert test_file.is_file()
+
+
+seen_config_dirs = {}
+seen_configs = {}
+
+
+@funcnodes_test
+def test_a_context_isolation():
+    seen_config_dirs["a"] = funcnodes_core.config.get_config_dir()
+    seen_configs["a"] = json.dumps(funcnodes_core.config.get_config())
+
+
+@funcnodes_test
+def test_b_context_isolation():
+    seen_config_dirs["b"] = funcnodes_core.config.get_config_dir()
+    seen_configs["b"] = json.dumps(funcnodes_core.config.get_config())
+
+
+@funcnodes_test(disable_file_handler=False)
+def test_c_context_isolation():
+    seen_config_dirs["c"] = funcnodes_core.config.get_config_dir()
+    import pprint
+
+    pprint.pprint(funcnodes_core.config.get_config())
+    seen_configs["c"] = json.dumps(funcnodes_core.config.get_config())
+
+
+def test_config_dirs_are_distinct():
+    assert len(seen_config_dirs) == 3
+    assert seen_config_dirs["a"] != seen_config_dirs["b"]
+    assert seen_config_dirs["a"] != seen_config_dirs["c"]
+    assert seen_config_dirs["b"] != seen_config_dirs["c"]
+    assert seen_configs["a"] == seen_configs["b"]
+    assert seen_configs["a"] != seen_configs["c"]
+    assert seen_configs["b"] != seen_configs["c"]
