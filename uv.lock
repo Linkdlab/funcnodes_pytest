@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 2
 requires-python = ">=3.11"
 
 [[package]]
@@ -258,15 +258,15 @@ wheels = [
 
 [[package]]
 name = "exposedfunctionality"
-version = "0.3.20"
+version = "1.0.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pyyaml" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/14/2d/293b8dd4a8d021736e3f8c2fe11d44050998886da0cab3f4b8c90b746443/exposedfunctionality-0.3.20.tar.gz", hash = "sha256:f45bfc747177a9306c2c53893818910b32e264246a961ad605202d37bcdbf674", size = 23887, upload-time = "2025-02-24T12:23:22.874Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b9/e2/b46eec09792009ccee3fa3d8fba3540be1478655612fae8ba3f6f1b871ca/exposedfunctionality-1.0.2.tar.gz", hash = "sha256:6d4a55223041ef91d955d8016c2afbbcedb8e70fd1fdec76dfe69073d9da6f79", size = 68056, upload-time = "2025-09-03T09:38:58.119Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e2/f9/4b440f7a6592d4f94e4eb084aff7ec4025e8f86292ab4633d6499766252c/exposedfunctionality-0.3.20-py3-none-any.whl", hash = "sha256:aa009389ebf7230493f2b960acd2d5142145eae9fc8f2f679bca9eaa8d1e53c1", size = 27090, upload-time = "2025-02-24T12:23:21.374Z" },
+    { url = "https://files.pythonhosted.org/packages/5f/42/111fdd98410f4cc3c2bcb8cf1e92132f214dc5872b52db5ec84ccf7d16ba/exposedfunctionality-1.0.2-py3-none-any.whl", hash = "sha256:6a58bbd700044a80b11b4fbeaf4458fd034f455847be9036718d9238574d0bc5", size = 28831, upload-time = "2025-09-03T09:38:57.051Z" },
 ]
 
 [[package]]
@@ -280,18 +280,19 @@ wheels = [
 
 [[package]]
 name = "funcnodes-core"
-version = "0.3.48"
+version = "2.0.0a3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dill" },
     { name = "exposedfunctionality" },
+    { name = "pytest-funcnodes" },
     { name = "python-dotenv" },
     { name = "setuptools" },
     { name = "tqdm" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f3/18/75a7fc52501a32688d7ca9f55c759a14c29ed5dcc6228825751e4258d765/funcnodes_core-0.3.48.tar.gz", hash = "sha256:5f6d72d2555cec351c8a2b0b09d8d07906049bae9df1165a50baaac148ddb0f4", size = 89607, upload-time = "2025-03-19T11:11:29.966Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1a/02/683c1e20132b9d865b747ada8829c279c759b15ac25d8e289a797515e61a/funcnodes_core-2.0.0a3.tar.gz", hash = "sha256:1c8250d7cfb81a3b70bf47e552da5ea4e22dbbbcc11c0f439fbc56046aeb6108", size = 189872, upload-time = "2025-11-27T11:11:28.071Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/bd/7e/7f7babb2446b45d5a51f809ae16c74dfe70f9b0887fbfcc46f92e1e46328/funcnodes_core-0.3.48-py3-none-any.whl", hash = "sha256:a16f455d1554329a9056a833be9bbdc19631a0fb119ae812b2016466ac13c8da", size = 81661, upload-time = "2025-03-19T11:11:28.165Z" },
+    { url = "https://files.pythonhosted.org/packages/3c/ca/ca0ba069573e33d4831ab9789c7f90978959a8265666063dd0b69db5fac6/funcnodes_core-2.0.0a3-py3-none-any.whl", hash = "sha256:11ab6c16eba70a973061f291f1eb5ca4b66ecda71ea60d739f5131a4b96bde91", size = 91647, upload-time = "2025-11-27T11:11:26.728Z" },
 ]
 
 [[package]]
@@ -505,7 +506,7 @@ wheels = [
 
 [[package]]
 name = "pytest-funcnodes"
-version = "1.0.0a1"
+version = "1.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "funcnodes-core" },
@@ -522,7 +523,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "funcnodes-core", specifier = ">=0.3.48" },
+    { name = "funcnodes-core", specifier = ">=2.0.0a3" },
     { name = "pytest", specifier = ">=6.2.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
 ]
