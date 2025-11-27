@@ -1,3 +1,15 @@
+## 1.0.0 (2025-11-27)
+
+### BREAKING CHANGE
+
+- replace add_pid with no_prefix in testing helpers
+
+### Fix
+
+- **plugin**: guard against nested test context usage
+- **testingsystem**: generate unique prefixes and rename flag
+- **plugin**: set funcnodes config dir to temp base in pytest
+
 ## 0.4.2 (2025-11-25)
 
 ### Fix
