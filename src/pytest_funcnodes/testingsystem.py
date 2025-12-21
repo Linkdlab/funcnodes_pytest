@@ -31,6 +31,7 @@ def set_in_test(
     *,
     clear: bool = True,
     no_prefix: bool = False,
+    prefix: Optional[str] = None,
     config: Optional[fnconfig.ConfigType] = None,
     fail_on_warnings: Optional[List[Warning]] = None,
     disable_file_handler: bool = True,
@@ -66,7 +67,11 @@ def set_in_test(
         fn = "funcnodes_test"
 
         if not no_prefix:
-            fn += f"_{os.getpid()}_{uuid.uuid4().hex}"
+            if prefix is None:
+                prefix = f"_{os.getpid()}_{uuid.uuid4().hex}"
+            else:
+                prefix = f"_{prefix}"
+            fn += prefix
 
         fnconfig._BASE_CONFIG_DIR = Path(tempfile.gettempdir()) / fn
         if clear:
@@ -100,6 +105,7 @@ def setup(
     fail_on_warnings: Optional[List[Warning]] = None,
     clear: bool = True,
     no_prefix: bool = False,
+    prefix: Optional[str] = None,
     disable_file_handler: bool = True,
 ):
     if raise_if_already_in_test and get_in_test():
@@ -110,6 +116,7 @@ def setup(
             fail_on_warnings=fail_on_warnings,
             clear=clear,
             no_prefix=no_prefix,
+            prefix=prefix,
             disable_file_handler=disable_file_handler,
         )
     if not get_in_test():
@@ -155,6 +162,7 @@ class test_context:
         clear: bool = True,
         no_prefix: bool = False,
         disable_file_handler: bool = True,
+        prefix: Optional[str] = None,
     ):
         self._config_dir = None
         self._config = config
@@ -162,6 +170,7 @@ class test_context:
         self._clear = clear
         self._no_prefix = no_prefix
         self._disable_file_handler = disable_file_handler
+        self._prefix = prefix
 
     def __enter__(self):
         setup(
@@ -169,6 +178,7 @@ class test_context:
             fail_on_warnings=self._fail_on_warnings,
             clear=self._clear,
             no_prefix=self._no_prefix,
+            prefix=self._prefix,
             disable_file_handler=self._disable_file_handler,
         )
         self._config_dir = fnconfig.get_config_dir()
