@@ -1,3 +1,9 @@
+## 1.1.0 (2025-12-21)
+
+### Feat
+
+- **pytest-funcnodes**: use pytest node name as test prefix
+
 ## 1.0.0 (2025-11-27)
 
 ### BREAKING CHANGE
