@@ -71,7 +71,9 @@ def nodetest_setup_teardown(request):
     marker = request.node.get_closest_marker("nodetest")
     if marker:
         # Code to run before the test function
-        with test_context():
+        with test_context(
+            prefix=request.node.name,
+        ):
             yield
     else:
         yield
@@ -83,7 +85,7 @@ def funcnodes_test_setup_teardown(request):
     if marker:
         # Code to run before the test function
         assert not get_in_test(), "Already in test mode"
-        with test_context(**marker.kwargs):
+        with test_context(**{"prefix": request.node.name, **marker.kwargs}):
             yield
         assert not get_in_test(), "Still in test mode after test context"
     else:
